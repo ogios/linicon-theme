@@ -1,4 +1,17 @@
 //! Get the user's current icon theme on Linux
+//!
+//! There isn't a unified standard for getting the current icon theme on Linux.
+//! So linicon-theme attempts to check many places theme information might be
+//! stored.  See [`get_icon_theme`](fn.get_icon_theme.html) for more details.
+//!
+//! ## Example
+//! ```
+//! use linicon_theme::get_icon_theme;
+//! 
+//! println!("Your current icon theme is: {}", get_icon_theme().unwrap());
+//! ```
+#![forbid(unsafe_code)]
+
 use freedesktop_entry_parser::parse_entry;
 use ini::Ini;
 use std::{env, ffi::OsString, process::Command, str};
@@ -14,6 +27,8 @@ use std::{env, ffi::OsString, process::Command, str};
 /// - `$XDG_CONFIG_HOME/gtk-3.0/settings.ini` -> Settings -> gtk-icon-theme-name
 /// - `$HOME/.gtkrc-2.0` -> gtk-icon-theme-name
 /// - `$XDG_CONFIG_HOME/theme.conf` -> Settings -> icon-theme-name
+///
+/// Returns `None` if the theme can't be found for some reason.
 pub fn get_icon_theme() -> Option<String> {
     get_icon_theme_order(&[
         Check::KDEGlobals,
