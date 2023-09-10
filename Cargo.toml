@@ -14,5 +14,5 @@ include = ["src/lib.rs", "LICENSE", "README.md"]
 
 
 [dependencies]
-freedesktop_entry_parser = "1.0"
+freedesktop_entry_parser = "1.1"
 rust-ini = "0.15"
