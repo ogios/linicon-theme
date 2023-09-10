@@ -1,0 +1,21 @@
+image: alpine/edge
+packages:
+  - rust
+  - cargo
+  - faenza-icon-theme
+sources:
+  - https://git.sr.ht/~zethra/linicon-theme
+tasks:
+  - setup: |
+      cd linicon-theme/test_data
+      cp gtk2 ~/.gtkrc-2.0
+      mkdir -p ~/.config/gtk-3.0/
+      cp gtk3 ~/.config/gtk-3.0/
+      cp kdeglobals ~/.config/
+  - build: |
+      cd linicon-theme
+      cargo build --all-features
+  - test: |
+      export TEST_THEME=Faenza
+      cd linicon-theme
+      cargo test --all-features
