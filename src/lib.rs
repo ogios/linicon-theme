@@ -5,7 +5,15 @@ use std::{env, ffi::OsString, process::Command, str};
 
 /// Get the user's current icon theme
 ///
+/// There isn't a unified standard for getting the current icon theme on Linux.
+/// So linicon-theme attempts to check many places theme information might be
+/// stored.  The following places are checked in order.
 ///
+/// - `$XDG_CONFIG_HOME/kdeglobals` -> Icons -> Theme
+/// - Output of `gsettings get org.gnome.desktop.interface icon-theme`
+/// - `$XDG_CONFIG_HOME/gtk-3.0/settings.ini` -> Settings -> gtk-icon-theme-name
+/// - `$HOME/.gtkrc-2.0` -> gtk-icon-theme-name
+/// - `$XDG_CONFIG_HOME/theme.conf` -> Settings -> icon-theme-name
 pub fn get_icon_theme() -> Option<String> {
     get_icon_theme_order(&[
         Check::KDEGlobals,
@@ -16,6 +24,9 @@ pub fn get_icon_theme() -> Option<String> {
     ])
 }
 
+/// The same as [`get_icon_theme`](fn.get_icon_theme.html) except
+/// you can chose which icon theme locations are checked and in
+/// what order.
 pub fn get_icon_theme_order(order: &[Check]) -> Option<String> {
     let home_path = env::var_os("HOME")?;
     for check in order {
@@ -45,11 +56,17 @@ pub fn get_icon_theme_order(order: &[Check]) -> Option<String> {
     None
 }
 
+/// Select which theme store locations to check
 pub enum Check {
+    /// `$XDG_CONFIG_HOME/kdeglobals` -> Icons -> Theme
     KDEGlobals,
+    /// Output of `gsettings get org.gnome.desktop.interface icon-theme`
     GSettings,
+    /// `$XDG_CONFIG_HOME/gtk-3.0/settings.ini` -> Settings -> gtk-icon-theme-name
     GTK3,
+    /// `$HOME/.gtkrc-2.0` -> gtk-icon-theme-name
     GTK2,
+    /// `$XDG_CONFIG_HOME/theme.conf` -> Settings -> icon-theme-name
     ThemeConf,
 }
 
