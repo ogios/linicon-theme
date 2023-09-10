@@ -1,8 +1,17 @@
 [package]
-authors = ["Ben Aaron Goldberg <ben@benaaron.dev>"]
-edition = "2018"
 name = "linicon-theme"
-version = "0.1.0"
+authors = ["Ben Aaron Goldberg <ben@benaaron.dev>"]
+version = "1.0.0"
+description = "Get the user's current icon the on Linux"
+categories = ["os", "os::unix-apis"]
+keywords = ["linux", "icons", "freedesktop"]
+repository = "https://git.sr.ht/~zethra/linicon-theme"
+documentation = "https://docs.rs/linicon-theme"
+edition = "2018"
+readme = "README.md"
+license = "MPL-2.0"
+
+
 [dependencies]
-freedesktop_entry_parser = "*"
-rust-ini = "*"
+freedesktop_entry_parser = "1.0"
+rust-ini = "0.15"
