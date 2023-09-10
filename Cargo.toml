@@ -10,6 +10,7 @@ documentation = "https://docs.rs/linicon-theme"
 edition = "2018"
 readme = "README.md"
 license = "MPL-2.0"
+include = ["src/lib.rs", "LICENSE", "README.md"]
 
 
 [dependencies]
