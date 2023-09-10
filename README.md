@@ -2,7 +2,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/linicon-theme.svg)](https://crates.io/crates/linicon-theme)
 [![docs.rs](https://docs.rs/linicon-theme/badge.svg)](https://docs.rs/linicon-theme)
-![Minimum Supported Rust Version](https://img.shields.io/badge/rustc-1.45.2-red)
+![Minimum Supported Rust Version](https://img.shields.io/badge/rustc-1.48-red)
 
 Get the user's current icon theme on Linux
 
