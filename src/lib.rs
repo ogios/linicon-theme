@@ -7,7 +7,7 @@
 //! ## Example
 //! ```
 //! use linicon_theme::get_icon_theme;
-//! 
+//!
 //! println!("Your current icon theme is: {}", get_icon_theme().unwrap());
 //! ```
 #![forbid(unsafe_code)]
@@ -46,26 +46,31 @@ pub fn get_icon_theme_order(order: &[Check]) -> Option<String> {
     let home_path = env::var_os("HOME")?;
     for check in order {
         match check {
-            Check::KDEGlobals => match kde(home_path.clone()) {
-                Some(s) => return Some(s),
-                None => (),
-            },
-            Check::GSettings => match gsettings() {
-                Some(s) => return Some(s),
-                None => (),
-            },
-            Check::GTK3 => match gtk3(home_path.clone()) {
-                Some(s) => return Some(s),
-                None => (),
-            },
-            Check::GTK2 => match gtk2(home_path.clone()) {
-                Some(s) => return Some(s),
-                None => (),
-            },
-            Check::ThemeConf => match theme_conf(home_path.clone()) {
-                Some(s) => return Some(s),
-                None => (),
-            },
+            Check::KDEGlobals => {
+                if let Some(s) = kde(home_path.clone()) {
+                    return Some(s);
+                }
+            }
+            Check::GSettings => {
+                if let Some(s) = gsettings() {
+                    return Some(s);
+                }
+            }
+            Check::GTK3 => {
+                if let Some(s) = gtk3(home_path.clone()) {
+                    return Some(s);
+                }
+            }
+            Check::GTK2 => {
+                if let Some(s) = gtk2(home_path.clone()) {
+                    return Some(s);
+                }
+            }
+            Check::ThemeConf => {
+                if let Some(s) = theme_conf(home_path.clone()) {
+                    return Some(s);
+                }
+            }
         }
     }
     None
