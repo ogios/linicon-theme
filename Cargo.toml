@@ -1,7 +1,7 @@
 [package]
 name = "linicon-theme"
 authors = ["Ben Aaron Goldberg <ben@benaaron.dev>"]
-version = "1.0.1"
+version = "1.0.2"
 description = "Get the user's current icon the on Linux"
 categories = ["os", "os::unix-apis"]
 keywords = ["linux", "icons", "freedesktop"]
