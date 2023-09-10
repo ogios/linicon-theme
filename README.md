@@ -16,3 +16,10 @@ use linicon_theme::get_icon_theme;
 
 println!("Your current icon theme is: {}", get_icon_theme().unwrap());
 ```
+
+## Contributing
+
+Please send any and all patches, bugs, and questions to my public inbox
+[~zethra/public-inbox@lists.sr.ht](mailto:~zethra/public-inbox@lists.sr.ht)
+or submit a ticket to the bug tracker if you feel so inclined
+[todo.sr.ht/~zethra/linicon](https://todo.sr.ht/~zethra/linicon).
