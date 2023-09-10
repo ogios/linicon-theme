@@ -1,6 +1,6 @@
 [package]
 name = "linicon-theme"
-authors = ["Ben Aaron Goldberg <ben@benaaron.dev>"]
+authors = ["Sashanoraa <sasha@noraa.gay>"]
 version = "1.1.0"
 description = "Get the user's current icon the on Linux"
 categories = ["os", "os::unix-apis"]
@@ -14,5 +14,5 @@ include = ["src/lib.rs", "LICENSE", "README.md"]
 
 
 [dependencies]
-freedesktop_entry_parser = "1.1"
+freedesktop_entry_parser = "1.3"
 rust-ini = "0.17"
