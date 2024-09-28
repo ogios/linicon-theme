@@ -24,6 +24,7 @@ use std::{env, ffi::OsString, process::Command, str};
 ///
 /// - `$XDG_CONFIG_HOME/kdeglobals` -> Icons -> Theme
 /// - Output of `gsettings get org.gnome.desktop.interface icon-theme`
+/// - `$XDG_CONFIG_HOME/gtk-4.0/settings.ini` -> Settings -> gtk-icon-theme-name
 /// - `$XDG_CONFIG_HOME/gtk-3.0/settings.ini` -> Settings -> gtk-icon-theme-name
 /// - `$HOME/.gtkrc-2.0` -> gtk-icon-theme-name
 /// - `$XDG_CONFIG_HOME/theme.conf` -> Settings -> icon-theme-name
@@ -33,6 +34,7 @@ pub fn get_icon_theme() -> Option<String> {
     get_icon_theme_order(&[
         Check::KDEGlobals,
         Check::GSettings,
+        Check::GTK4,
         Check::GTK3,
         Check::GTK2,
         Check::ThemeConf,
@@ -53,6 +55,11 @@ pub fn get_icon_theme_order(order: &[Check]) -> Option<String> {
             }
             Check::GSettings => {
                 if let Some(s) = gsettings() {
+                    return Some(s);
+                }
+            }
+            Check::GTK4 => {
+                if let Some(s) = gtk4(home_path.clone()) {
                     return Some(s);
                 }
             }
@@ -82,6 +89,8 @@ pub enum Check {
     KDEGlobals,
     /// Output of `gsettings get org.gnome.desktop.interface icon-theme`
     GSettings,
+    /// `$XDG_CONFIG_HOME/gtk-4.0/settings.ini` -> Settings -> gtk-icon-theme-name
+    GTK4,
     /// `$XDG_CONFIG_HOME/gtk-3.0/settings.ini` -> Settings -> gtk-icon-theme-name
     GTK3,
     /// `$HOME/.gtkrc-2.0` -> gtk-icon-theme-name
@@ -107,6 +116,14 @@ fn gtk2(mut home_path: OsString) -> Option<String> {
 fn gtk3(home_path: OsString) -> Option<String> {
     let mut path = conf_dir(home_path)?;
     path.push("/gtk-3.0/settings.ini");
+    let file = Ini::load_from_file(path).ok()?;
+    file.get_from(Some("Settings"), "gtk-icon-theme-name")
+        .map(|s| s.to_owned())
+}
+
+fn gtk4(home_path: OsString) -> Option<String> {
+    let mut path = conf_dir(home_path)?;
+    path.push("/gtk-4.0/settings.ini");
     let file = Ini::load_from_file(path).ok()?;
     file.get_from(Some("Settings"), "gtk-icon-theme-name")
         .map(|s| s.to_owned())
@@ -162,6 +179,13 @@ mod tests {
         let home_path = env::var_os("HOME").unwrap();
         let target_name = env::var("TEST_THEME").unwrap();
         assert_eq!(kde(home_path), Some(target_name));
+    }
+
+    #[test]
+    fn gtk4_test() {
+        let home_path = env::var_os("HOME").unwrap();
+        let target_name = env::var("TEST_THEME").unwrap();
+        assert_eq!(gtk4(home_path), Some(target_name));
     }
 
     #[test]
