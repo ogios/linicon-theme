@@ -131,7 +131,7 @@ fn gtk4(home_path: OsString) -> Option<String> {
 
 fn gsettings() -> Option<String> {
     let output = Command::new("gsettings")
-        .args(&["get", "org.gnome.desktop.interface", "icon-theme"])
+        .args(["get", "org.gnome.desktop.interface", "icon-theme"])
         .output()
         .ok()?
         .stdout;
