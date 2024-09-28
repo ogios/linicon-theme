@@ -1,5 +1,8 @@
 #!/bin/sh
 
-set-cargo-version ./Cargo.toml $2
+set -euo pipefail
+
+cargo set-version "$2"
+cargo check
 git add Cargo.toml
 git commit -sm "Bump version to $2"
